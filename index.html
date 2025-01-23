@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <script src="https://kit.fontawesome.com/b5f4641468.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Landing page styling */
+        #landing-page {
+            clear: both;
+            text-align: center;
+        }
+
+        /* Large heading for the landing page */
+        #landing-page h2 {
+            font-weight: 500;
+            font-size: 5rem;
+        }
+
+        /* Main heading style */
+        h1 {
+            font-size: 10rem;
+        }
+        
+        /* Styling for buttons on the landing page */
+        #landing-page .button {
+            font-size: 3rem;
+            padding: 12px 40px;
+            border-radius: 30px;
+            margin-top: 20px;
+        }
+
+        /* Section padding */
+        #split {
+            padding: 2em;
+        }
+
+        /* Icon styling */
+        .icons {
+            width: 32px;
+            border-radius: 100%;
+            padding: 10px;
+            font-size: 3.2rem;
+        }
+
+        /* Navbar styling */
+        nav {
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            transform: translateY(0);
+            transition: transform 3s ease-in-out;
+            z-index: 1000; /* Ensures navbar stays above other elements */
+        }
+
+        /* Styling for links */
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        /* Navbar links alignment */
+        nav a {
+            float: left;
+        }
+
+        /* Floating right for split section */
+        #split {
+            float: right;
+            padding-right: 50px;
+        }
+
+        /* Button-specific margin in navbar */
+        nav .button {
+            margin-left: 20px;
+        }
+
+        /* Highlighted span styling */
+        span {
+            color: #14559F;
+        }
+
+        /* Adjusted color for dark mode */
+        body.dark-mode span {
+            color: #60A4F0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- Website logo linking to the homepage -->
+            <a href="index.html"><figure>
+                <img id="logo" src="images/Notify-logo.png" alt="Notify logo"></figure></a>
+            <div id="split">
+                <!-- Dark mode toggle button -->
+                <a href="#" id="darkModeToggle">
+                    <img class="icons" src="images/brightness.png" alt="Toggle Dark Mode">
+                </a> <!-- Icon via flaticon Tempo_doloe -->
+                <!-- 'Get Started' button linking to home.php -->
+                <a class="button" href="home.php">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="landing-page">
+            <!-- Welcome message -->
+            <h1>Welcome to Note-ify</h1>
+            <h2>The best <span>note-sharing</span> platform</h2>
+            <!-- Call-to-action button -->
+            <a class="button" href="home.php">Get Started</a>
+        </section>
+    </main>
+    <script>
+        /*
+        The following javascript is for the dark mode functionality, it works by declaring the elements involved as variables
+        then toggling the dark-mode ID to the body if the button is clicked. It also changes the toggle image and noteify logo. 
+        */
+        document.addEventListener("DOMContentLoaded", () => {
+            const darkModeToggle = document.querySelector(".icons");
+            const body = document.body;
+            const logo = document.querySelector("nav img"); // Select the Noteify logo
+    
+            // Retrieve the dark mode state from localStorage
+            const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    
+            // Apply the saved dark mode state
+            if (savedDarkMode) {
+                body.classList.add("dark-mode");
+                darkModeToggle.setAttribute("src", "images/night-mode.png");
+                logo.setAttribute("src", "images/Notify-logo-dark.png");
+            }
+    
+            darkModeToggle.addEventListener("click", () => {
+                // Toggle dark mode styles
+                const isDarkMode = body.classList.toggle("dark-mode");
+    
+                // Update the brightness image
+                const brightnessImage = isDarkMode ? "images/night-mode.png" : "images/brightness.png";
+                darkModeToggle.setAttribute("src", brightnessImage);
+    
+                // Update the Noteify logo
+                const logoImage = isDarkMode ? "images/Notify-logo-dark.png" : "images/Notify-logo.png";
+                logo.setAttribute("src", logoImage);
+    
+                // Save the dark mode state in localStorage
+                localStorage.setItem("darkMode", isDarkMode);
+            });
+        });
+    </script>
+</body>
+</html>

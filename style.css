@@ -1,0 +1,270 @@
+/* Global styles */
+* {
+    font-family: "Arial", sans-serif; /* Set font to Arial for all elements */
+    line-height: 140%; /* Set line height to improve readability */
+}
+
+/* HTML base styles */
+html {
+    font-size: 62.5%; /* Set the base font size to 62.5% for rem calculation*/
+    scroll-behavior: smooth; /* Smooth scrolling when navigating to anchor links */
+}
+
+/* Hover effect for icons */
+.icons:hover {
+    background-color: rgba(0, 0, 0, 0.2); /* Light background on hover */
+}
+
+/* Navigation bar styles */
+nav {
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    transform: translateY(0);
+    transition: transform 3s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 400;
+    flex-wrap: wrap; /* Allow flex items to wrap */
+}
+
+/* Navigation item styles */
+.nav-item {
+    text-decoration: none;
+    display: flex;
+    padding: 0px 10px;
+    align-items: center;
+    cursor: pointer;
+    font-size: 2rem;
+}
+
+#nav-list {
+    margin-right: auto;
+}
+
+#split {
+    margin-left: auto;
+}
+
+.nav-item i {
+    color: #585858;
+}
+
+/* Hover effect for nav items */
+.nav-item:hover {
+    background-color: rgb(205, 203, 203, 0.7);
+    border-radius: 50px;
+}
+
+.nav-item p {
+    padding: 0 1em;
+}
+
+/* Search input styles */
+#search {
+    position: relative;
+    width: 500px;
+}
+
+#search input {
+    width: 20em;
+    height: 35px;
+    padding: 10px 20px 10px 70px;
+    border-radius: 50px;
+    background-color: rgb(199, 199, 199);
+    color: rgb(0, 0, 0);
+    border: none;
+    outline: none;
+    font-size: 1.8rem;
+}
+
+#search #search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    background-color: #7c7c7c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#search #search-icon:hover {
+    background-color: #686868;
+}
+
+#search #search-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+
+/* Button styles */
+.button {
+    padding: 10px 25px;
+    background: #0C5692; /* Blue background */
+    color: white;
+    border-radius: 25px;
+    font-size: 1.7rem;
+    transition: 0.3s; /* Smooth transition on hover */
+    margin-top: 5px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Hover effect for button */
+.button:hover {
+    background: #3f93d8; /* Lighter blue on hover */
+}
+
+/* Icon styles */
+.icons {
+    width: 32px;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 3.2rem;
+    border: none;
+    background: none;
+}
+
+/* Hover effect for icons */
+.icons:hover {
+    background-color: rgba(0, 0, 0, 0.2); /* Light background on hover */
+}
+
+/* Link styling */
+a {
+    text-decoration: none; /* Remove underline from links */
+    color: black;
+}
+
+/* Heading styles */
+h1 {
+    margin-top: 90px; /* Top margin for h1 */
+    font-size: 7rem; /* Large font size for h1 */
+}
+
+/* Split container styling */
+#split {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px; 
+    margin-right: 50px;
+}
+
+/* Main and aside padding */
+main, aside {
+    padding: 30px; /* Add padding to main and aside sections */
+}
+
+/* Removing borders from fieldset */
+fieldset {
+    border: none;
+}
+
+/* Logo styling */
+nav figure {
+    width: 70px;
+}
+#logo{
+    width: 150px;
+}
+
+/* Left side of navigation styling */
+#nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#nav-list {
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+}
+
+/* Heart icon color */
+.fa-solid .fa-heart {
+    color: red;
+}
+
+/* Dark Mode configuration */
+body.dark-mode {
+    background-color: black; /* Black background in dark mode */
+    color: white; /* White text in dark mode */
+}
+
+/* Dark mode for navigation */
+body.dark-mode nav {
+    background-color: black; /* Black background for navigation */
+}
+
+/* Dark mode links */
+body.dark-mode a {
+    color: white; /* White text for links */
+}
+
+/* Dark mode icon hover effect */
+body.dark-mode .icons:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background for icons on hover */
+}
+
+/* Dark mode button styles */
+body.dark-mode .button {
+    background-color: #3176AF; /* Blue background for button */
+}
+
+body.dark-mode .button:hover {
+    background-color: #1e5d91; /* Darker blue on hover */
+}
+
+/* Dark mode search input styles */
+body.dark-mode #search input {
+    background-color: rgb(54, 54, 54); /* Darker background for input */
+}
+
+body.dark-mode #search #search-icon {
+    background-color: #5e5c5c; /* Darker background for search icon */
+}
+
+/* Dark mode card styles */
+body.dark-mode .card {
+    background-color: #585858; /* Dark gray background */
+    border: 2px solid white; /* White border */
+}
+
+body.dark-mode .inner-box {
+    background-color: #000000; /* Black background for inner boxes */
+    border-top: 2px solid white; /* White border on top */
+}
+
+/* Dark mode nav item hover effect */
+body.dark-mode .nav-item:hover {
+    background-color: rgb(42, 41, 41); /* Darker background for nav items on hover */
+}
+
+/* Dark mode search input text */
+body.dark-mode #search input {
+    color: white; /* White text for search input */
+}
+
+/* Dark mode nav item icons */
+body.dark-mode .nav-item i {
+    color: white; /* White color for icons in dark mode */
+}
+
+@media (max-width: 1220px) {
+    #search{
+        display: none;
+    }
+}
