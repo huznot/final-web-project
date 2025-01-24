@@ -6,7 +6,7 @@
     <title>Create Notes</title>
     <script src="https://kit.fontawesome.com/b5f4641468.js" crossorigin="anonymous"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=18">
     <style>
         /* Editor Container Styling */
         #editor-container {
@@ -87,7 +87,7 @@
 
         /* Label Styling */
         label{
-            font-size: 30px;
+            font-size: 3rem;
         }
 
         /* Custom File Upload Button Styling */
