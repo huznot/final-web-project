@@ -39,11 +39,15 @@ nav {
     padding: 0px 10px;
     align-items: center;
     cursor: pointer;
-    font-size: 2rem;
+    font-size: 1.5vw; /*I talked to you about why I had to use vw for this one. So the nav bar is compatible on mobile. */
 }
 
 #nav-list {
     margin-right: auto;
+}
+#nav-left a{
+    flex-wrap: wrap; /* Allow flex items to wrap */
+
 }
 
 #split {
@@ -149,7 +153,7 @@ a {
 
 /* Heading styles */
 h1 {
-    margin-top: 90px; /* Top margin for h1 */
+    margin-top: 150px; /* Top margin for h1 */
     font-size: 7rem; /* Large font size for h1 */
 }
 
@@ -262,9 +266,10 @@ body.dark-mode #search input {
 body.dark-mode .nav-item i {
     color: white; /* White color for icons in dark mode */
 }
-
 @media (max-width: 1220px) {
     #search{
         display: none;
     }
 }
+
+
