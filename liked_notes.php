@@ -107,7 +107,7 @@ if (!$liked_blog_result) {
         <nav>
             <div id="nav-left">
                 <!-- Logo linking to homepage -->
-                <a href="index.html"><figure><img id="logo" src="images/Notify-logo.png"></figure></a>               
+                <a href="index.html"><figure><img id="logo" alt="Notify logo" src="images/Notify-logo.png"></figure></a>               
                 <div id="nav-list">
                     <a href="home.php" class="nav-item" id="one">
                         <i class="fas fa-home" alt="home"></i>
