@@ -1,3 +1,6 @@
+<!--
+This code is to upload images uploaded by the user to the uploads directory which is in my workspace.
+--->
 <?php
 header('Content-Type: application/json');
 
