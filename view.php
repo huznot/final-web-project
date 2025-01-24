@@ -1,126 +1,173 @@
-<!--
-The following is just connection code to be able to connect my PHP scripts with my SQL server.
-
-It fetches notes or reffered to as "blogs" in my code but only those that have likes over zero.
---->
-<?php
-// Database connection details
-$db_host = "sql300.infinityfree.com";
-$db_user = "if0_37426626";
-$db_pass = "oH1R1Fth3ZW0O";
-$db_name = "if0_37426626_fileuploaddownload";
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-
-// Check if the database connection was successful
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Ensure 'id' parameter exists and is numeric to prevent SQL injection
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $blog_id = (int)$_GET['id']; // Cast to integer for added security
-} else {
-    die("Invalid blog ID.");
-}
-
-// Fetch the blog post from the database
-$blog_result = $conn->query("SELECT * FROM blogs WHERE id = $blog_id");
-
-if ($blog_result && $blog_result->num_rows > 0) {
-    $blog = $blog_result->fetch_assoc();
-} else {
-    die("Blog not found.");
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Notes</title>
     <script src="https://kit.fontawesome.com/b5f4641468.js" crossorigin="anonymous"></script>
-    <title><?php echo htmlspecialchars($blog['title']); ?></title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=18">
     <style>
-        /* Styling for the blog container */
-        #blog-container {
+        /* Editor Container Styling */
+        #editor-container {
+            height: 400px;
             background-color: rgb(255, 255, 255);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid black;
-            max-width: 50vw;
-            width: 100%;
-            float: left;
-            margin-bottom: 30px;
-        }
-        
-        /* Ensuring images are responsive */
-        #content img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px 0;
-        }
-        
-        #content {
+            color: black;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
             font-size: 2rem;
         }
         
-        /* Styling for comments container */
-        #comments-container {
+
+        /* Styling for Quill Toolbar */
+        .ql-toolbar.ql-snow {
+            border-left: none;
+            border-right: none;
+            border-color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+        }
+
+        /* Form Container Styling */
+        #form-container {
+            background-color: rgb(255, 255, 255);
+            border-radius: 8px;
+            border: 1px solid black;
+            max-width: 800px;
+            width: 100%;
+            float: left;
+            margin-bottom: 50px;
+        }
+
+        /* Thumbnail Container Styling */
+        #thumbnail-container {
             border: 1px solid black;
             padding: 20px;
             border-radius: 8px;
             max-width: 30vw;
             width: 100%;
             min-height: 150px;
+            max-height: 300px;
             float: right;
             background-color: rgb(255, 255, 255);
             font-size: 1.6rem;
-            margin-bottom: 50px;
-            flex: 1;
-            min-width: 300px; /* ensures it doesn't get too narrow */
-            max-width: 30vw;
-        }
-        
-        #comments p {
-            margin: 10px 0;
-        }
-        
-        /* Input and textarea styling */
-        #comments-input, textarea {
-            width: 100%;
-            padding: 8px 3px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            text-align: center;
+            margin-left: auto;
         }
 
-        /* Adjust layout on smaller screens */
-        @media (max-width: 768px) {
-            #comments-container {
-                max-width: 100%;
-            }
+        /* Thumbnail Preview Styling */
+        #thumbnail-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        /* Wrapper for comment form and viewing containers */
+
+        /* Title Styling */
+        #title {
+            width: 100%;
+            max-width: 800px;
+            font-size: 4rem;
+            border: none;
+            border-bottom: 3px solid black;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Focus Styling for Title */
+        #title:focus {
+            outline: none;
+        }
+
+        /* Button Styling */
+        .button {
+            margin-bottom: 20px;
+        }
+
+        /* Label Styling */
+        label{
+            font-size: 3rem;
+        }
+
+        /* Custom File Upload Button Styling */
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Hover and Active States for File Upload Button */
+        .custom-file-upload:hover {
+            background-color: #0056b3;
+        }
+
+        .custom-file-upload:active {
+            background-color: #004080;
+        }
+
+        #button-container{
+            text-align: center;
+        }
+        /* Wrapper for form and thumbnail containers */
         #form-wrapper {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
         }
-        
-        /* Dark mode styles */
-        body.dark-mode #blog-container, body.dark-mode #comments-container {
+
+        /* Adjust form container to take full width on small screens */
+        #form-container {
+            flex: 1;
+            min-width: 300px; /* ensures it doesn't get too narrow */
+        }
+
+        /* Adjust thumbnail container styling to match the flex layout */
+        #thumbnail-container {
+            flex: 1;
+            min-width: 300px; /* ensures it doesn't get too narrow */
+            max-width: 30vw;
+        }
+
+        /* Adjust layout on smaller screens */
+        @media (max-width: 768px) {
+            #thumbnail-container {
+                max-width: 100%;
+            }
+        }
+
+
+        /* Dark Mode Styles */
+        body.dark-mode #editor-container{
+            background-color: black;
+            color: white;
+        }
+
+        body.dark-mode #thumbnail-container, body.dark-mode #form-container{
             background-color: black;
             border: 1px solid white;
+            color: white;
         }
-        body.dark-mode #comments-input, body.dark-mode textarea {
+
+        body.dark-mode .ql-toolbar.ql-snow, body.dark-mode #title{
             background-color: black;
+            border-color: white;
             color: white;
         }
     </style>
 </head>
 <body>
+    <!-- Header Section with Navigation -->
     <header>
         <nav>
             <div id="nav-left">
@@ -140,120 +187,186 @@ if ($blog_result && $blog_result->num_rows > 0) {
                     </a>
                 </div>
             </div>
-            
             <div id="split">
-                <!-- Toggle for dark mode -->
                 <a href="#" id="darkModeToggle"><img class="icons" id="brightnessIcon" src="images/brightness.png" alt="Toggle Dark Mode"></a>
             </div>
         </nav>
     </header>
-    <main>
-        <div id="top">
-            <h1><a href="home.php"><i class="fa-solid fa-arrow-left"></i></a> <?php echo ($blog['title']); ?></h1>
-        </div>
-        
-        <div id="container-wrapper">
-            <div id="blog-container">
-                <!--This is fetching the image from the uploads folder and adding an alt to it and then printing all blog content
-                I talked to you about how I can't add figure to this because it kept breaking but you said it was fine.--->
-                <?php $blog_content = str_replace('<img', '<img alt="Image not available"', $blog['content']);?>
-                <div id="content"> <?php echo ($blog_content); ?> </div>
-            </div>
-            <div id="comments-container">
-                <h2>Comments</h2>
-                <?php
-                /*
-                This PHP code attains author name and their comment from the comments column relative to each note in
-                my SQL database.
-                */
-                $comment_result = $conn->query("SELECT * FROM comments WHERE blog_id = $blog_id ORDER BY created_at DESC");
-                if ($comment_result && $comment_result->num_rows > 0) {
-                    while ($comment = $comment_result->fetch_assoc()) {
-                        echo "<p><strong>" . htmlspecialchars($comment['author']) . ":</strong> " . htmlspecialchars($comment['comment']) . "</p>";
-                        echo "<small>Posted on: " . $comment['created_at'] . "</small><hr>";
-                    }
-                } else {
-                    echo "<p>No comments yet.</p>";
-                }
-                ?>
-                <!--Form for posting comments-->
-                <form action="" method="POST">
-                    <fieldset>
-                        <label for="author">Name:</label><br>
-                        <input id="comments-input" type="text" id="author" name="author" minlength="1" required><br><br>
 
-                        <label for="comment">Comment:</label><br>
-                        <textarea id="comment" name="comment" rows="4" minlength="3" required></textarea><br><br>
-                        <button type="submit" class="button" name="submit_comment">Submit Comment</button>
+    <main>
+        <h1>Create New Notes</h1>
+        <!-- Wrapper for Form and Thumbnail -->
+        <div id="form-wrapper">
+            <!-- Form to Upload Notes -->
+            <div id="form-container">
+                <form id="blogForm" action="save.php" method="POST" enctype="multipart/form-data">
+                    <fieldset>
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" minlength="5" placeholder="Notes Title" required>
+                        <label for="content">Content</label>
+                        <input type="hidden" name="content" id="content">
+                        <div id="editor-container"></div> <!-- I incorporated minlength through JS because its a Quill JS dynamic form -->
+                        <input type="hidden" name="thumbnail" id="thumbnail">
+                        <div id="button-container">
+                            <a href="home.php"><button type="submit" class="button">Upload Notes</button></a>
+                        </div>
                     </fieldset>
                 </form>
+            </div>
+
+            <!-- Thumbnail Selection Section -->
+            <div id="thumbnail-container">
+                <h2>Select a thumbnail</h2>
+                <label for="thumbnailInput" class="button">Choose Thumbnail</label>
+                <input type="file" name="thumbnail" id="thumbnailInput" accept="image/*" hidden>
+
+                <img id="thumbnail-preview" alt="Thumbnail Preview" style="display: none;">
             </div>
         </div>
     </main>
 
 
-
-    <?php
-    /*
-    This PHP code manages comments. It takes the author field and the comment field and inserts 
-    those into columns relative to the note they were posted to inside my SQL database
-    */
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_comment'])) {
-        $author = $conn->real_escape_string($_POST['author']);
-        $comment = $conn->real_escape_string($_POST['comment']);
-
-        if (!empty($author) && !empty($comment)) {
-            $sql = "INSERT INTO comments (blog_id, author, comment) VALUES ($blog_id, '$author', '$comment')";
-            if ($conn->query($sql)) {
-                header("Refresh:0"); // Refresh the page to show the new comment
-            } else {
-                echo "<p>Error: " . $conn->error . "</p>";
-            }
-        }
-    }
-    ?>
-
-    
+    <!-- Quill.js and Custom Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
-        /*
-        The following javascript is for the dark mode functionality, it works by declaring the elements involved as variables
-        then toggling the dark-mode ID to the body if the button is clicked. It also changes the toggle image and noteify logo.
+        /* 
+        This JavaScript code initializes a Quill editor with a custom toolbar that allows users to add headers, bold, italic, underline text, 
+        and insert images or code blocks. It includes functionality to select and upload an image from the user's local system, then insert the 
+        uploaded image into the editor. The code also handles uploading a thumbnail image, displaying a preview of the selected thumbnail, and 
+        saving the thumbnail URL in a hidden form field. Additionally, it manages saving the content of the editor to a hidden form field upon 
+        form submission and also ensures there is a minimum of 10 characters in the form. Finally, it implements the dark mode toggle, which switches 
+        between light and dark themes, saves the theme state in localStorage, and updates the page's appearance (including the logo and dark mode button)
+        based on the stored theme preference.
         */
-        document.addEventListener("DOMContentLoaded", () => {
-        const darkModeToggle = document.querySelector(".icons");
-        const body = document.body;
-        const logo = document.querySelector("nav img"); // Select the Noteify logo
+        // Initialize Quill editor with custom toolbar
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block']
+                ]
+            }
+        });
 
-        // Retrieve the dark mode state from localStorage
-        const savedDarkMode = localStorage.getItem("darkMode") === "true";
+        // Handle image upload from toolbar
+        quill.getModule('toolbar').addHandler('image', function () {
+            selectLocalImage();
+        });
 
-        // Apply the saved dark mode state
-        if (savedDarkMode) {
-            body.classList.add("dark-mode");
-            darkModeToggle.setAttribute("src", "images/night-mode.png");
-            logo.setAttribute("src", "images/Notify-logo-dark.png");
+        function selectLocalImage() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = () => {
+                const file = input.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('image', file);
+
+                    fetch('upload_image.php', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                insertToEditor(data.url);
+                            } else {
+                                console.error('Error uploading image:', data.error);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            };
         }
 
-        darkModeToggle.addEventListener("click", () => {
-            // Toggle dark mode styles
-            const isDarkMode = body.classList.toggle("dark-mode");
+        function insertToEditor(url) {
+            const range = quill.getSelection();
+            quill.insertEmbed(range.index, 'image', url);
+        }
 
-            // Update the brightness image
-            const brightnessImage = isDarkMode ? "images/night-mode.png" : "images/brightness.png";
-            darkModeToggle.setAttribute("src", brightnessImage);
+        // Handle thumbnail preview and upload
+        const thumbnailInput = document.getElementById('thumbnailInput');
+        const thumbnailPreview = document.getElementById('thumbnail-preview');
+        const thumbnailField = document.getElementById('thumbnail');
 
-            // Update the Noteify logo
-            const logoImage = isDarkMode ? "images/Notify-logo-dark.png" : "images/Notify-logo.png";
-            logo.setAttribute("src", logoImage);
+        thumbnailInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    thumbnailPreview.src = event.target.result;
+                    thumbnailPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
 
-            // Save the dark mode state in localStorage
-            localStorage.setItem("darkMode", isDarkMode);
+                const formData = new FormData();
+                formData.append('thumbnail', file);
+
+                fetch('upload_thumbnail.php', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            thumbnailField.value = data.url;
+                        } else {
+                            console.error('Error uploading thumbnail:', data.error);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
         });
-    });
+
+        // Minimum content length validation
+        const MIN_CONTENT_LENGTH = 10;
+
+        document.getElementById('blogForm').onsubmit = function (event) {
+            // Get the plain text from the Quill editor
+            const textContent = quill.getText().trim(); 
+
+            if (textContent.length < MIN_CONTENT_LENGTH) {
+                alert(`Content must be at least ${MIN_CONTENT_LENGTH} characters long.`);
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+
+            // Save the content to the hidden input field
+            const content = document.querySelector('input[name=content]');
+            content.value = quill.root.innerHTML;
+        };
+
+        // Dark Mode Toggle Functionality
+        document.addEventListener("DOMContentLoaded", () => {
+            const darkModeToggle = document.querySelector(".icons");
+            const body = document.body;
+            const logo = document.querySelector("nav img");
+
+            const savedDarkMode = localStorage.getItem("darkMode") === "true";
+
+            if (savedDarkMode) {
+                body.classList.add("dark-mode");
+                darkModeToggle.setAttribute("src", "images/night-mode.png");
+                logo.setAttribute("src", "images/Notify-logo-dark.png");
+            }
+
+            darkModeToggle.addEventListener("click", () => {
+                const isDarkMode = body.classList.toggle("dark-mode");
+
+                const brightnessImage = isDarkMode ? "images/night-mode.png" : "images/brightness.png";
+                darkModeToggle.setAttribute("src", brightnessImage);
+
+                const logoImage = isDarkMode ? "images/Notify-logo-dark.png" : "images/Notify-logo.png";
+                logo.setAttribute("src", logoImage);
+
+                localStorage.setItem("darkMode", isDarkMode);
+            });
+        });
     </script>
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
