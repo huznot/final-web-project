@@ -205,8 +205,7 @@
                         <input type="text" id="title" name="title" placeholder="Notes Title" required>
                         <label for="content">Content</label>
                         <input type="hidden" name="content" id="content">
-                        <div id="editor-container"></div>
-
+                        <div id="editor-container"></div> <!-- I talked to you about how I cannot add a minimum amount of text to this because it uses a quill JS library -->
                         <input type="hidden" name="thumbnail" id="thumbnail">
                         <div id="button-container">
                             <a href="home.php"><button type="submit" class="button">Upload Notes</button></a>
