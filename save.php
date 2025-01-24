@@ -1,9 +1,13 @@
+<!--
+This code saves the blog and everything related to it into my SQL database. It first retrieves form data
+from create.php and then inserts that into the database.
+--->
 <?php
 // Database connection details
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "fileuploaddownload";
+$db_host = "sql300.infinityfree.com";
+$db_user = "if0_37426626";
+$db_pass = "oH1R1Fth3ZW0O";
+$db_name = "if0_37426626_fileuploaddownload";
 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
