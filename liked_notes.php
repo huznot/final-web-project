@@ -6,11 +6,10 @@ It fetches notes or reffered to as "blogs" in my code but only those that have l
 
 <?php
 // Database connection details
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "fileuploaddownload";
-
+$db_host = "sql300.infinityfree.com";
+$db_user = "if0_37426626";
+$db_pass = "oH1R1Fth3ZW0O";
+$db_name = "if0_37426626_fileuploaddownload";
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 if ($conn->connect_error) {
@@ -32,7 +31,7 @@ if (!$liked_blog_result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liked Notes</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=18">
     <script src="https://kit.fontawesome.com/b5f4641468.js" crossorigin="anonymous"></script>  
     <style>
         /* Styles for colored text */
