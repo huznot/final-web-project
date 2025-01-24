@@ -109,10 +109,6 @@ if ($blog_result && $blog_result->num_rows > 0) {
             justify-content: space-between;
         }
         
-        h1 {
-            margin-top: 100px;
-        }
-        
         /* Dark mode styles */
         body.dark-mode #blog-container, body.dark-mode #comments-container {
             background-color: black;
@@ -184,10 +180,10 @@ if ($blog_result && $blog_result->num_rows > 0) {
                 <form action="" method="POST">
                     <fieldset>
                         <label for="author">Name:</label><br>
-                        <input id="comments-input" type="text" id="author" name="author" required><br><br>
+                        <input id="comments-input" type="text" id="author" name="author" minlength="1" required><br><br>
 
                         <label for="comment">Comment:</label><br>
-                        <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
+                        <textarea id="comment" name="comment" rows="4" minlength="3" required></textarea><br><br>
                         <button type="submit" class="button" name="submit_comment">Submit Comment</button>
                     </fieldset>
                 </form>
