@@ -1,9 +1,14 @@
+<!--
+This code uploads thumbnails assosciated to each note.
+It fetches the thumbnail uploaded from create.php and inserts that into the uploads/thumbnails
+directory
+--->
 <?php
 // Database connection details
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "fileuploaddownload";
+$db_host = "sql300.infinityfree.com";
+$db_user = "if0_37426626";
+$db_pass = "oH1R1Fth3ZW0O";
+$db_name = "if0_37426626_fileuploaddownload";
 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
