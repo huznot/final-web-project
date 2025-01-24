@@ -1,9 +1,14 @@
+<!--
+The following is just connection code to be able to connect my PHP scripts with my SQL server.
+
+It fetches notes or reffered to as "blogs" in my code but only those that have likes over zero.
+--->
 <?php
 // Database connection details
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "fileuploaddownload";
+$db_host = "sql300.infinityfree.com";
+$db_user = "if0_37426626";
+$db_pass = "oH1R1Fth3ZW0O";
+$db_name = "if0_37426626_fileuploaddownload";
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 // Check if the database connection was successful
@@ -35,7 +40,7 @@ if ($blog_result && $blog_result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b5f4641468.js" crossorigin="anonymous"></script>
     <title><?php echo htmlspecialchars($blog['title']); ?></title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=18">
     <style>
         /* Styling for the blog container */
         #blog-container {
@@ -73,6 +78,9 @@ if ($blog_result && $blog_result->num_rows > 0) {
             background-color: rgb(255, 255, 255);
             font-size: 1.6rem;
             margin-bottom: 50px;
+            flex: 1;
+            min-width: 300px; /* ensures it doesn't get too narrow */
+            max-width: 30vw;
         }
         
         #comments p {
@@ -86,6 +94,19 @@ if ($blog_result && $blog_result->num_rows > 0) {
             margin-top: 5px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+
+        /* Adjust layout on smaller screens */
+        @media (max-width: 768px) {
+            #comments-container {
+                max-width: 100%;
+            }
+        }
+        /* Wrapper for comment form and viewing containers */
+        #form-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
         
         h1 {
@@ -135,40 +156,42 @@ if ($blog_result && $blog_result->num_rows > 0) {
             <h1><a href="home.php"><i class="fa-solid fa-arrow-left"></i></a> <?php echo ($blog['title']); ?></h1>
         </div>
         
-        <section id="page">
+        <div id="container-wrapper">
             <div id="blog-container">
+                <!--This is fetching the image from the uploads folder and adding an alt to it and then printing all blog content
+                I talked to you about how I can't add figure to this because it kept breaking but you said it was fine.--->
                 <?php $blog_content = str_replace('<img', '<img alt="Image not available"', $blog['content']);?>
                 <div id="content"> <?php echo ($blog_content); ?> </div>
             </div>
-        </section>
-        <div id="comments-container">
-            <h2>Comments</h2>
-            <?php
-            /*
-            This PHP code attains author name and their comment from the comments column relative to each note in
-            my SQL database.
-            */
-            $comment_result = $conn->query("SELECT * FROM comments WHERE blog_id = $blog_id ORDER BY created_at DESC");
-            if ($comment_result && $comment_result->num_rows > 0) {
-                while ($comment = $comment_result->fetch_assoc()) {
-                    echo "<p><strong>" . htmlspecialchars($comment['author']) . ":</strong> " . htmlspecialchars($comment['comment']) . "</p>";
-                    echo "<small>Posted on: " . $comment['created_at'] . "</small><hr>";
+            <div id="comments-container">
+                <h2>Comments</h2>
+                <?php
+                /*
+                This PHP code attains author name and their comment from the comments column relative to each note in
+                my SQL database.
+                */
+                $comment_result = $conn->query("SELECT * FROM comments WHERE blog_id = $blog_id ORDER BY created_at DESC");
+                if ($comment_result && $comment_result->num_rows > 0) {
+                    while ($comment = $comment_result->fetch_assoc()) {
+                        echo "<p><strong>" . htmlspecialchars($comment['author']) . ":</strong> " . htmlspecialchars($comment['comment']) . "</p>";
+                        echo "<small>Posted on: " . $comment['created_at'] . "</small><hr>";
+                    }
+                } else {
+                    echo "<p>No comments yet.</p>";
                 }
-            } else {
-                echo "<p>No comments yet.</p>";
-            }
-            ?>
-            <!--Form for posting comments-->
-            <form action="" method="POST">
-                <fieldset>
-                    <label for="author">Name:</label><br>
-                    <input id="comments-input" type="text" id="author" name="author" required><br><br>
+                ?>
+                <!--Form for posting comments-->
+                <form action="" method="POST">
+                    <fieldset>
+                        <label for="author">Name:</label><br>
+                        <input id="comments-input" type="text" id="author" name="author" required><br><br>
 
-                    <label for="comment">Comment:</label><br>
-                    <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
-                    <button type="submit" class="button" name="submit_comment">Submit Comment</button>
-                </fieldset>
-            </form>
+                        <label for="comment">Comment:</label><br>
+                        <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
+                        <button type="submit" class="button" name="submit_comment">Submit Comment</button>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </main>
 
